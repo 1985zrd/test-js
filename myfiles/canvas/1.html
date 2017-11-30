@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+	<style>
+		html,body{padding:0;margin:0;height:100%;}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" style="display:block;">
+		浏览器不支持canvas，请使用高版本浏览器！
+	</canvas>
+</body>
+<script>
+var arr = [
+		{"p":[{"x":89,"y":62},{"x":89,"y":209},{"x":236,"y":209}],"color":"#0090ff"},
+		{"p":[{"x":294,"y":0},{"x":399,"y":104},{"x":294,"y":209},{"x":189,"y":104}],"color":"#fa4b03"},
+		{"p":[{"x":513,"y":62},{"x":513,"y":209},{"x":365,"y":209}],"color":"#6600ff"},
+		{"p":[{"x":149,"y":209},{"x":443,"y":209},{"x":297,"y":365}],"color":"#0fff00"},
+		{"p":[{"x":244,"y":305},{"x":392,"y":453},{"x":392,"y":600},{"x":244,"y":453}],"color":"#ffef0f"},
+		{"p":[{"x":297,"y":505},{"x":297,"y":800},{"x":0,"y":800}],"color":"#006915"},
+		{"p":[{"x":297,"y":505},{"x":297,"y":800},{"x":592,"y":800}],"color":"#db3434"}
+		];
+
+var width,height;
+var canvas = document.querySelector("#canvas");
+setFullPage();
+window.onresize = function(){
+	setFullPage()
+};
+
+var context = canvas.getContext("2d");
+
+for(var i=0,len=arr.length;i<len;i++){
+	draw(arr[i],context);
+};
+function draw(obj,ctx){
+	ctx.fillStyle = obj.color;
+	//ctx.fillStyle = "rgb("+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+")";
+	ctx.lineWidth = 2;
+
+	ctx.beginPath();
+	ctx.moveTo(obj.p[0].x,obj.p[0].y);
+	for (var i = 1, len=obj.p.length; i < len; i++) {
+		ctx.lineTo(obj.p[i].x,obj.p[i].y);
+	};
+	ctx.closePath();
+
+	ctx.fill();
+	ctx.stroke();
+};
+
+context.lineWidth = 2;
+
+
+for(var i=0;i<10;i++){
+	context.fillStyle = "rgba("+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.random().toFixed(2)+")";
+	context.beginPath()
+	context.arc(750, 40+80*i, 30, 0, 2*Math.PI*(i+1)/10);
+	context.closePath();
+
+	context.fill();
+	context.stroke();
+}
+for(var i=0;i<10;i++){
+	context.fillStyle = "rgb("+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+")";
+	context.beginPath()
+	context.arc(850, 40+80*i, 30, 0, 2*Math.PI*(i+1)/10,true);
+	context.closePath();
+
+	context.fill();
+	context.stroke();
+}
+
+/*context.strokeStyle = "red";
+context.fillStyle = "yellow";
+context.lineWidth = 5;
+
+context.beginPath();
+context.moveTo(100,100);
+context.lineTo(200,300);
+context.lineTo(100,300);
+context.closePath();
+
+context.fill();
+context.stroke();
+
+context.beginPath();
+context.moveTo(400,500);
+context.lineTo(700,600);
+context.closePath();
+context.strokeStyle = "blue";
+context.stroke();
+*/
+function setFullPage(){
+	width = document.body.clientWidth;
+	height = document.body.clientHeight;
+	canvas.width = width;
+	canvas.height = 900;
+};
+</script>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+	<style>
+		html,body{padding:0;margin:0;height:100%;}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" style="display:block;">
+		浏览器不支持canvas，请使用高版本浏览器！
+	</canvas>
+</body>
+<script src="digit.js"></script>
+<script>
+
+var width,height;
+var canvas = document.querySelector("#canvas");
+setFullPage();
+window.onresize = function(){
+	setFullPage()
+};
+var x = 500, y = 100, r = 8;
+var endTime = new Date(2016,9,17,12,00,00);
+
+var t = getTimeout();
+
+var context = canvas.getContext("2d");
+
+setInterval(function(){
+	render(context);
+	upDate();
+},50);
+render(context);
+
+
+function upDate(){
+	var nextTime = getTimeout();
+	var nextHours = Math.floor(nextTime/3600), nextMinu = Math.floor(nextTime%3600/60), nextSec = nextTime%60;
+	var curHours = Math.floor(t/3600), curMinu = Math.floor(t%3600/60), curSec = t%60;
+	if(nextSec != curSec){
+		t = nextTime;
+	}
+};
+
+function getTimeout(){
+	var ret = Math.round((endTime.getTime() - new Date().getTime())/1000);
+	return ret>0?ret:0;
+};
+function render(ctx){
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+
+	var hours = Math.floor(t/3600)<9?"0"+Math.floor(t/3600):Math.floor(t/3600), minu = Math.floor(t%3600/60)<9?"0"+Math.floor(t%3600/60):Math.floor(t%3600/60), sec = (t%60)<9?"0"+t%60:t%60;
+
+	var hoursStr = String(hours);
+	var minuStr = String(minu);
+	var secStr = String(sec);
+	for(var i=0, len=hoursStr.length; i<len; i++){
+		drawDigit( ctx, x+15*(r+1)*i, y, parseInt(hoursStr.charAt(i)) );
+	};
+	drawDigit( ctx, x+15*(r+1)*hoursStr.length, y, 10 );
+
+	for(var i=0, len=minuStr.length; i<len; i++){
+		drawDigit( ctx, x+15*(r+1)*i+15*(r+1)*hoursStr.length+9*(r+1), y, parseInt(minuStr.charAt(i)) );
+	};
+	drawDigit( ctx, x+15*(r+1)*minuStr.length+15*(r+1)*hoursStr.length+9*(r+1), y, 10 );
+
+	for(var i=0, len=secStr.length; i<len; i++){
+		drawDigit( ctx, x+15*(r+1)*i+15*(r+1)*hoursStr.length+9*(r+1)*2+15*(r+1)*minuStr.length, y, parseInt(secStr.charAt(i)) );
+	};
+};
+
+function drawDigit(ctx, x, y, num){
+	ctx.fillStyle = "rgb(0,102,153)";
+	for(var i=0;i<digit[num].length;i++){
+		for(var j=0;j<digit[num][i].length;j++){
+			if(digit[num][i][j] == 1){
+				ctx.beginPath();
+				ctx.arc(x+j*2*(r+1)+(r+1), y+i*2*(r+1)+(r+1), r, 0, 2*Math.PI);
+				ctx.closePath();
+				ctx.fill();
+			}
+		}
+	};
+};
+
+function setFullPage(){
+	width = document.body.clientWidth;
+	height = document.body.clientHeight;
+	canvas.width = width;
+	canvas.height = height;
+};
+</script>
+</html>

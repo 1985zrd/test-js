@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="author" content ="MyPage"/>
+<meta name="keywords" content="个人，个人网页，个人简历" /> 
+<meta name="description" content="一个业余制作的个人网站，包含了一些个人信息和分享内容。" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<base _target="_blank" /> 
+<title>My Page_相册</title>
+<link rel="stylesheet" type="text/css" href="css/album.css" />
+<script type="text/javascript" src="js/myJS.js"></script>
+<script>
+	window.onload = function(){
+		var oChangePage = document.getElementById('change_page')
+		var oAlbumList = document.getElementById('album_list')
+		var oAlbumAllPic = document.getElementById('album_all_pic')
+		var aAlbumAllLi = oAlbumAllPic.getElementsByTagName('li')
+		var oAlbumListWrap = document.getElementById('album_list_wrap')
+		var oUl = oAlbumListWrap.getElementsByTagName('ul')[0]
+		var aLi = oUl.getElementsByTagName('li')
+		var oPrev = document.getElementById('prev')
+		var oNext = document.getElementById('next')
+		var oAlbumMinList = document.getElementById('album_min_list')
+		var aMinLi = oAlbumMinList.getElementsByTagName('li')
+		var onoff = true
+		var len = aLi.length
+		var num = 0
+		var obody = document.body;
+		var iTime = null
+		oUl.style.width = aLi[0].offsetWidth*len+'px'
+		autoPlay();
+		function autoPlay(){
+			iTime = setInterval(function(){
+				num++
+				if(num>=len){
+					num=0
+					startMove(oAlbumMinList, {left:0})
+					//doMove(oAlbumMinList,'left',30,0)
+				}
+				picLunBo();
+			},4000)
+		};
+		oAlbumList.onmouseover = function(){
+			clearInterval(iTime)
+		};
+		oAlbumList.onmouseout = autoPlay;
+		oNext.onclick = function(){
+			num++
+			if(num>=len){
+				num=0
+				startMove(oAlbumMinList, {left:0})
+				//doMove(oAlbumMinList,'left',30,0)
+			}
+			picLunBo();
+		};
+		oPrev.onclick = function(){
+			num--
+			if(num<0){
+				num=len-1
+				startMove(oAlbumMinList, {left:-(parseInt(aMinLi[0].offsetWidth))*(num-5)})
+				//doMove(oAlbumMinList,'left',30,-(parseInt(aMinLi[0].offsetWidth))*(num-5))
+			}
+			picLunBo();
+		};
+		for(var i=0;i<len;i++){
+			aMinLi[i].index = i;
+			aMinLi[i].onclick = function(){
+				num = this.index
+				picLunBo();
+			}
+		};
+		function picLunBo(){
+			oUl.style.left = -aLi[0].offsetWidth*num+'px'
+			for(var i=0;i<len;i++){
+				aMinLi[i].className = '';
+			}
+			aMinLi[num%len].className = 'active';
+			if(num == -parseInt(getStyle(oAlbumMinList,'left'))/parseInt(aMinLi[0].offsetWidth) && parseInt(oAlbumMinList.style.left)<0){
+				startMove(oAlbumMinList, {left:-(parseInt(aMinLi[0].offsetWidth))*(num-1)})
+				//doMove(oAlbumMinList,'left',30,-(parseInt(aMinLi[0].offsetWidth))*(num-1))
+			}else if(num == -parseInt(getStyle(oAlbumMinList,'left'))/parseInt(aMinLi[0].offsetWidth)+5 && num<len-1){
+				startMove(oAlbumMinList, {left:-(parseInt(aMinLi[0].offsetWidth))*(num-4)})
+				//doMove(oAlbumMinList,'left',30,-(parseInt(aMinLi[0].offsetWidth))*(num-4))
+			}
+		};
+
+		oChangePage.onclick = function(){
+			if(onoff){
+				oAlbumList.style.display = 'none'
+				oAlbumAllPic.style.display = 'block'
+				this.innerHTML = '轮播效果'
+				onoff = !onoff
+			}else{
+				oAlbumList.style.display = 'block'
+				oAlbumAllPic.style.display = 'none'
+				this.innerHTML = '图片列表'
+				onoff = !onoff
+			}
+		};
+		oChangePage.onmouseover = function(){
+			this.style.color = '#ffcc33'
+		};
+		oChangePage.onmouseout = function(){
+			this.style.color = '#fff'
+		};
+
+        for(var i=0;i<len;i++){
+        	var aImgs = oAlbumAllPic.getElementsByTagName('img');
+        }
+        var flag = true
+        for(var i=0;i<len;i++){
+        	aAlbumAllLi[i].index = i
+        	aAlbumAllLi[i].onclick = function(ev){
+        		var ev = ev || window.event
+        		if(!flag){
+        			return false
+        		}
+        		flag=false
+        		var oImg = document.createElement('img');
+        		oImg.style.cssText = "width:800px;position:absolute;left:200px;top:100px;border:1px solid red;display:block";
+        		oImg.src = aImgs[this.index].src;
+        		oImg.name = 'addImg'
+        		obody.appendChild(oImg);
+        		var oAddImg = document.getElementsByName('addImg')[0];
+        		oAddImg.style.left = (document.documentElement.clientWidth - oAddImg.offsetWidth)/2 + 'px';
+        		ev.stopPropagation();
+    			document.onclick = function(){
+    				if(!flag){
+			            obody.removeChild(oAddImg);
+			            flag=true;
+    				}
+		        };
+        	};
+        }
+	};
+</script>
+
+</head>
+
+<body>
+<div class="header">
+    <div class="header_bar">
+		<span>我的相册</span>
+		<a id="change_page" href="javascript:;">图片列表</a>
+	</div>
+</div>
+<div id="album_list" class="album_list">
+	<div id="album_list_wrap" class="album_list_wrap">
+		<ul>
+			<li><img src="imgs/pic/1.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/2.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/3.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/4.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/5.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/6.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/7.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/8.jpg" alt="照片" /></li>
+		</ul>
+	</div>
+	<div id="prev" class="prev"></div>
+	<div id="next" class="next"></div>
+	<div class="albumMinList_wrap">
+		<ul id="album_min_list" class="album_min_list">
+			<li class="active"><img src="imgs/pic/1.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/2.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/3.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/4.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/5.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/6.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/7.jpg" alt="照片" /></li>
+			<li><img src="imgs/pic/8.jpg" alt="照片" /></li>
+		</ul>
+	</div>
+</div>
+
+<ul id="album_all_pic" class="album_all_pic">
+	<li><a href="javascript:;"><img src="imgs/pic/1.jpg" alt="照片" /></a></li>
+	<li><a href="javascript:;"><img src="imgs/pic/2.jpg" alt="照片" /></a></li>
+	<li><a href="javascript:;"><img src="imgs/pic/3.jpg" alt="照片" /></a></li>
+	<li><a href="javascript:;"><img src="imgs/pic/4.jpg" alt="照片" /></a></li>
+	<li><a href="javascript:;"><img src="imgs/pic/5.jpg" alt="照片" /></a></li>
+	<li><a href="javascript:;"><img src="imgs/pic/6.jpg" alt="照片" /></a></li>
+	<li><a href="javascript:;"><img src="imgs/pic/7.jpg" alt="照片" /></a></li>
+	<li><a href="javascript:;"><img src="imgs/pic/8.jpg" alt="照片" /></a></li>
+</ul>
+</body>
+</html>

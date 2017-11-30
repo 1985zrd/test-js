@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="author" content ="MyPage"/>
+<meta name="keywords" content="个人，个人网页，个人简历" /> 
+<meta name="description" content="一个业余制作的个人网站，包含了一些个人信息和分享内容。" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<base target="_blank" /> 
+<title>My Page</title>
+<link rel="stylesheet" type="text/css" href="css/index.css" />
+<script type="text/javascript" src="js/myJS.js"></script>
+<script src="http://api.html5media.info/1.1.4/html5media.min.js"></script>
+
+<script>
+	window.onload = function(){
+		var oDateHours = document.getElementById('date_hours');
+		var oDateDay = document.getElementById('date_day');
+		var oDateYear = document.getElementById('date_year');
+
+		/*轮播图*/
+		var oPicPosition = document.getElementById('pic_position');
+		var oPicList = oPicPosition.getElementsByTagName('ul')[0];
+		var aLi = oPicList.getElementsByTagName('li');
+		var oNext = document.getElementById('next');
+		var oPrev = document.getElementById('prev');
+		var len = aLi.length;
+		var num = 0;
+		var myTime = "";
+		oPicList.style.width = aLi[0].offsetWidth*len+"px";
+		oPicPosition.style.width = oPicList.offsetWidth*2+"px";
+		var oPicList1 = oPicList.cloneNode(true);
+		oPicPosition.appendChild(oPicList1);
+		var oBox = oPicPosition.parentNode
+
+
+		oBox.onmouseover = function(){
+			window.clearInterval(myTime)
+		}
+		oBox.onmouseout = function(){
+			dingshi()
+		};
+		function dingshi(){
+			myTime = window.setInterval(function(){
+				lunbo()
+			},4000)
+		}
+		dingshi();
+	
+
+		oNext.onclick = function(){
+			lunbo()
+		};
+		oPrev.onclick = function(){
+			num--;
+			if(num < 0){
+				num = len-1
+				oPicPosition.style.left = -202*len+"px"
+			}
+			startMove(oPicPosition,{left:-202*num})
+			//doMove(oPicPosition,'left',20,-202*num);
+		};
+		function lunbo(){
+			num++;
+			startMove(oPicPosition,{left:-202*num},function(){
+				if(num >= len){
+					num = 0
+					oPicPosition.style.left = 0
+				}
+			})
+			/*doMove(oPicPosition,'left',20,-202*num,function(){
+				if(num >= len){
+					num = 0
+					oPicPosition.style.left = 0
+				}
+			});*/
+		};
+		/*轮播图*/
+
+		/*音乐播放器*/
+		var oSingerList = [{"id":"1","title":"一生中最爱","singer":"陈奕迅","src":"mp3/875_一生中最爱.mp3"},
+					       {"id":"2","title":"A.I.N.Y.（爱你）","singer":"邓紫棋","src":"mp3/A.I.N.Y.（爱你）.mp3"},
+						   {"id":"3","title":"防不胜防","singer":"陈奕迅","src":"mp3/防不胜防.mp3"},
+						   {"id":"4","title":"富士山下","singer":"陈奕迅","src":"mp3/富士山下.mp3"},
+						   {"id":"5","title":"好久不见","singer":"陈奕迅","src":"mp3/好久不见.mp3"},
+						   {"id":"6","title":"打回原形","singer":"陈奕迅","src":"mp3/打回原形.mp3"},
+						   {"id":"7","title":"无人之境","singer":"陈奕迅","src":"mp3/无人之境.mp3"},
+						   {"id":"8","title":"十面埋伏","singer":"陈奕迅","src":"mp3/十面埋伏.mp3"}
+		]
+		var oLen = oSingerList.length;
+		var oMusicBox = document.getElementById('musicBox');
+		var oMusicList = document.getElementById('music_list')
+		var aMusicLi = oMusicList.getElementsByTagName('li')
+		var m = 0;
+		oMusicBox.src = oSingerList[m].src
+		aMusicLi[m%oLen].style.background = '#666';
+		oMusicBox.loop = false;
+		for(var i=0;i<oLen;i++){
+			aMusicLi[i].innerHTML = '<span class="id">'+oSingerList[i].id+'</span><a class="title" href="javascript:;">'+oSingerList[i].title+'</a><span class="singer">'+oSingerList[i].singer+'</span>';
+			aMusicLi[i].index = i
+			aMusicLi[i].onclick = function(){
+				oMusicBox.src = oSingerList[this.index].src
+				for(var i=0;i<oLen;i++){
+					aMusicLi[i].style.background = ''
+				}
+				aMusicLi[this.index].style.background = '#666'
+				m = this.index
+			};
+			
+		}
+		oMusicBox.addEventListener('ended', function () {  
+		    m++;
+		    if(m==oLen){
+		    	m=0
+		    }
+		    oMusicBox.src = oSingerList[m].src
+			for(var i=0;i<oLen;i++){
+				aMusicLi[i].style.background = ''
+			}
+			aMusicLi[m].style.background = '#666'
+		}, true);
+			
+		/*音乐播放器*/
+
+        /*时间显示*/
+        setInterval(Hours,1000);
+        Hours();
+        function Hours(){
+        	var myDate = new Date();
+        	var iYear = myDate.getFullYear();
+			var iMonth = myDate.getMonth()+1;
+			var iDate = myDate.getDate();
+			var iWeek = myDate.getDay();
+			var iHours = myDate.getHours();
+			var iMin = myDate.getMinutes();
+			var iSec = myDate.getSeconds();
+			if( iWeek === 0 ) iWeek = '星期日';
+			if( iWeek === 1 ) iWeek = '星期一';
+			if( iWeek === 2 ) iWeek = '星期二';
+			if( iWeek === 3 ) iWeek = '星期三';
+			if( iWeek === 4 ) iWeek = '星期四';
+			if( iWeek === 5 ) iWeek = '星期五';
+			if( iWeek === 6 ) iWeek = '星期六';
+			oDateHours.innerHTML = iHours+":"+iMin+":"+iSec
+			oDateDay.innerHTML = iWeek
+			oDateYear.innerHTML = iYear+"年"+iMonth+"月"+iDate+"日"
+        };
+        /*时间显示*/
+	};
+</script>
+</head>
+
+<body>
+<div class="wrap">
+	<div class="index_l">
+		<div class="index_l_content">
+			<img class="logo" src="imgs/logo.png" alt="logo" title="logo" />
+			<div class="date">
+				<p id="date_hours" class="date_hours">12:30:01</p>
+				<p id="date_day" class="date_day">星期五</p>
+				<p id="date_year" class="date_year">2015年7月8日</p>
+			</div>
+			<ul class="nav">
+				<li><a href="javascript:;"><em>H</em>ome</a></li>
+				<li><a href="album.html"><em>A</em>lbun</a></li>
+				<li><a href="javascript:;"><em>W</em>ork</a></li>
+				<li><a href="javascript:;"><em>G</em>uestbook</a></li>
+				<li><a href="javascript:;"><em>M</em>yShare</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="index_r">
+		<div class="music">
+			<audio id="musicBox" autoplay controls src="">
+                <!--<source src="song.ogg" type="audio/ogg">-->
+		        你的浏览器不支持html5的audio！！！
+		    </audio>
+		    <ul id="music_list" class="music_list">
+		    	<li>aaa</li>
+		    	<li>bbb</li>
+		    	<li>ccc</li>
+		    	<li>dddddddd</li>
+		    	<li>eeeeeee</li>
+		    	<li>ggggggggg</li>
+		    	<li>eeeeeee</li>
+		    	<li>ggggggggg</li>
+		    </ul>
+		</div>
+		<div class="line"></div>
+
+		<div class="life">
+			<p>生活记录：</p>
+			<div class="pic_wrap">
+			    <div id="pic_position">
+			    	<ul class="pic_list">
+						<li><a href="album.html"><img src="imgs/pic/1.jpg" alt="照片" title="照片" /></a></li>
+						<li><a href="album.html"><img src="imgs/pic/2.jpg" alt="照片" title="照片" /></a></li>
+						<li><a href="album.html"><img src="imgs/pic/3.jpg" alt="照片" title="照片" /></a></li>
+						<li><a href="album.html"><img src="imgs/pic/4.jpg" alt="照片" title="照片" /></a></li>
+						<li><a href="album.html"><img src="imgs/pic/5.jpg" alt="照片" title="照片" /></a></li>
+						<li><a href="album.html"><img src="imgs/pic/6.jpg" alt="照片" title="照片" /></a></li>
+						<li><a href="album.html"><img src="imgs/pic/7.jpg" alt="照片" title="照片" /></a></li>
+						<li><a href="album.html"><img src="imgs/pic/8.jpg" alt="照片" title="照片" /></a></li>
+					</ul>
+			    </div>
+				<div id="next" class="next"></div>
+				<div id="prev" class="prev"></div>
+			</div>
+		</div>
+		<div class="line"></div>
+
+		<div class="life myshare">
+			<p>文章分享：</p>
+			<ul class="myshare_list">
+				<li><a href="javascript:;">习近平：牢记抗战伟大历史 坚定不移维护世界和平</a></li>
+				<li><a href="javascript:;">央行：释放流动性多渠道支持股票市场稳定发展</a></li>
+				<li><a href="javascript:;">证监会 : 中证金将加大对中小市值股票购买力度 </a></li>
+			</ul>
+		</div>
+		<div class="line"></div>
+	</div>
+</div>
+<p class="foot_text">©2015•Microsoft Corporation•All rights reserved</p>
+</body>
+</html>

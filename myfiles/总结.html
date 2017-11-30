@@ -1,0 +1,275 @@
+<head>
+<script>
+js:
+1.js的数据类型：数字、字符串、布尔值、函数、对象（obj、【】、{}、null）、未定义
+
+2.数据转换：
+  显示类型转换：
+	var a=''
+	Number(a) //0  要转换的对象是空的，则为0
+	parseInt() // 取整
+	parseFloat() //带小数
+  隐式类型转换：
+  +     200+'3'   ==2003  变成字符串
+  -*/%  200-'3'  ==197    数字
+  ++  --
+  ><    '10'>9  == true  '10'>'9'== false
+  !取反  都转成布尔值
+  == '2'==2为真
+  
+  NaN和自己不相等
+  isNaN() 判定某些值是不是数字，它不喜欢数字
+  
+3.函数传参：
+  arguments[0]  传递进来的参数的第几个
+  
+  function getStyle(obj,attr){
+	 return  obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr]
+  }
+  
+4.定时器：
+  setInterval()
+  clearInterval()
+  
+  setTimeout()
+  clearTimeout()
+  
+5.时间：
+  new Date()  //当前系统的时间对象
+  
+  var iYear = myTime.getFullYear();
+		var iMonth = myTime.getMonth()+1;
+		var iDate = myTime.getDate();
+		var iWeek = myTime.getDay();
+		var iHours = myTime.getHours();
+		var iMin = myTime.getMinutes();
+		var iSec = myTime.getSeconds();
+		var str = '';
+		
+		if( iWeek === 0 ) iWeek = '星期日';
+		if( iWeek === 1 ) iWeek = '星期一';
+		if( iWeek === 2 ) iWeek = '星期二';
+		if( iWeek === 3 ) iWeek = '星期三';
+		if( iWeek === 4 ) iWeek = '星期四';
+		if( iWeek === 5 ) iWeek = '星期五';
+		if( iWeek === 6 ) iWeek = '星期六';
+  
+  倒计时：
+  var iNow = new Date();
+  var iNew = new Date( 'November 27,2013 22:3:0' );
+
+  var t = Math.floor((iNew - iNow)/1000);
+  // 毫秒 - 秒
+  var str = Math.floor(t/86400)+'天'+Math.floor(t%86400/3600)+'时'+Math.floor(t%86400%3600/60)+'分'+t%60+'秒';
+document.getElementById('Myframe').contentWindow.document.getElementById('新页面里的元素')
+  alert( str );
+
+// 天：Math.floor(t/86400)
+// 时：Math.floor(t%86400/3600)
+// 分：Math.floor(t%86400%3600/60)
+// 秒：t%60
+
+// 数字形式：new Date( 2013,4,1,9,48,12 );
+// 字符串形式：new Date('June 10,2013 12:12:12');
+
+// January、February、March、April、May、June、
+// July、August、September、October、November、December
+
+
+6.字符串：
+  str.charAt()  //找字符串的第几个
+  str.charCodeAt() //找字符串的第几个的编码值
+  //0-9 （48--57）  a-z （97--122） A-Z (65--90)
+  
+  String.fromCharCode() //根据编码值返回对应的字符
+  
+* str.indexOf('a',0)  //从字符串的0位开始查找'a',返回a在第几位；如果它的返回值为-1，就是没找到
+  
+  str.lastIndexOf('a',20) //从后面往前查找；从字符串的20位开始往前查找'a'
+  
+* str.substring(a,b)  //字符串截取;从字符串的第a位截取到第b位
+  str.slice()         //字符串截取;
+  
+  str.toUpperCase()  //把字符串转成大写
+  str.toLowerCase()  //把字符串转成小写
+  
+* split()   //把字符串分割成数组；
+  var str = 'www.miaov.com'  
+  var arr = str.split('.')  ==> ['www','miaov','com']  // 以一个点为分割符
+  
+* join()   //把数组变成字符串 
+  var arr = ['a','b','c','d']  
+  var str = arr.join('')  ==> str = 'abcd' 
+  
+  
+7.数组、json
+  var json4 = { 'name' : 'miaov', 'age' : 3, 'fun' : '前端开发'  };
+  for ( var attr in json4  ) {
+	alert( attr );
+	alert( json4[attr] );
+  }
+  
+  push()  //往数组的后面塞一个东西；返回值为数组长度
+  unshift()  //往数组的前面塞一个东西
+  
+  pop()   //删除数组最后一个；返回值为删除的那个值
+  shift() //删除数组最前面一个；返回值为删除的那个值
+  
+  splice()  //能删除、替换、添加数组内容； 返回值为删除的那个东西
+  arr.splice(0,2,'a') //删除0到2的内容，添加‘a’
+  arr.splice(1,0,'a') //在数组1的前面添加‘a’
+  
+  sort()  //数组排序
+  arr.sort(function(a,b){
+	 return a-b 
+   });
+   
+   
+   
+   
+   快排：
+   function quickSort(arr) {
+  　  if (arr.length <= 1) { return arr; }
+  　　var pivotIndex = Math.floor(arr.length / 2);
+  　　var pivot = arr.splice(pivotIndex, 1)[0];
+  　　var left = [];
+  　　var right = [];
+  　　for (var i = 0; i < arr.length; i++){
+  　　　　if (arr[i] < pivot) {
+  　　　　　　left.push(arr[i]);
+  　　　　} else {
+  　　　　　　right.push(arr[i]);
+  　　　　}
+  　　}
+  　　return quickSort(left).concat([pivot], quickSort(right));
+    };
+	
+	随机排序：
+	arr.sort(function(a,b){
+		return Math.random()-0.5;
+	});
+	
+	
+	随机数：
+	Math.random() //0-1的随机数
+	Math.floor()  //向下取整
+	Math.round()  //4舍5入
+	Math.ceil()   //向上取整
+	
+	var x = 3;
+    var y = 49;
+    alert( Math.round( Math.random()*(y-x) + x ) );
+
+    0~x
+    alert( Math.round( Math.random()*x) );
+
+    1~x
+    alert( Math.ceil( Math.random()*x) );
+	
+	// 0~1 : Math.round(Math.random());
+	
+    // 0~10
+    // alert( Math.round(Math.random()*10) );
+
+	// 5~10
+	// alert( Math.round( Math.random()*5 + 5 ) );
+	
+	// 10~20
+	// alert( Math.round( Math.random()*10 + 10 ) );
+	
+	// 20~100
+	// alert( Math.round( Math.random()*80 + 20 ) );
+	
+	
+	
+	arr.concat(arr1,arr2)  //把几个数组组成一个数组
+	
+	arr.reverse()          //把数组里的东西颠倒顺序
+ 
+
+/* 让iframe里面的页面高度跟主页面一致 */
+function parentPageHeight(){
+  $("#iframe").load(function(){
+      var mainheight = $(this).contents().find("#Right").height()+30;
+      $(this).height(mainheight);
+  });
+}
+function subPageHeight(){
+  $(window.parent.document).find("#iframe").load(function(){
+    var main = $(window.parent.document).find("#iframe");
+    var mainheight = $(document).height()+30;
+    main.height(mainheight );
+  });
+}
+/* 让iframe里面的页面高度跟主页面一致 end */
+
+/*百度地图应用*/
+var map = new BMap.Map("allmap");
+map.enableScrollWheelZoom(true);
+var point = new BMap.Point(116.442739,39.919853);
+map.centerAndZoom(point,16);
+var marker = new BMap.Marker(point);  // 创建标注
+map.addOverlay(marker);              // 将标注添加到地图中
+/*百度地图应用 end*/ 
+
+/*传入年、月，返回当月的总天数*/
+function DayNumOfMonth(Year,Month){
+    Month--;
+    var d = new Date(Year,Month,1);
+    d.setDate(d.getDate()+32-d.getDate());
+    return (32-d.getDate());
+};
+/*传入年、月，返回当月第一天是星期几*/
+function getDateMonth(Year,Month){
+  var d = new Date(Year,(Month-1),1);
+  return d.getDay();
+};
+
+
+/*图片预加载*/
+function loadImage(url,callback) {       
+    var img =new Image();  
+    img.onload =function(){  
+        img.onload =null;  
+        callback(img);  
+    }  
+    img.src = url;   
+}  
+  
+function call(img){  
+    $(img).appendTo('.box');  
+}  
+// loadImage('http://www.appelsiini.net/projects/lazyload/img/viper_1.jpg',call); 
+
+
+/*为当前账户添加node_modules目录读写权限即可。
+sudo chown -R $(whoami) ~/.npm*/
+
+
+
+//js 阻止事件冒泡和默认行为
+window.event? window.event.cancelBubble = true : e.stopPropagation();
+window.event? window.event.returnValue = false : e.preventDefault();
+
+
+/* css清浮动
+.clear {
+  zoom:1;
+}
+.clear:before,.clear:after {
+  display: table;
+  content: " ";
+} 
+.clear:after {
+  clear: both;
+}
+*/
+
+</script>
+</head>
+<body>
+  <!--[if lte IE 8]>
+    <p class="ie">你的浏览器为ie8或以下，请到<a href="http://browsehappy.com">这里</a>更新，获取最佳体验</p>
+  <![endif]-->
+</body>
+</html>

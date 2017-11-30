@@ -1,0 +1,32 @@
+1、npm i express -S   安装express，同时将express "^4.14.0" 写入dependencies
+   npm i express -D  安装express，同时将express "^4.14.0" 写入devDependencies
+   npm i express --save --save-exact 将express "4.14.0" 写入dependencies
+
+2、npm config set save-exact true 这样每次 npm i xxx --save 的时候会锁定依赖的版本号，相当于加了 --save-exact 参数。
+
+3、npm shrinkwrap 通过运行 npm shrinkwrap，会在当前目录下产生一个 npm-shrinkwrap.json，里面包含了通过 node_modules 计算出的模块的依赖树及版本。只要目录下有 npm-shrinkwrap.json 则运行 npm install 的时候会优先使用 npm-shrinkwrap.json 进行安装，没有则使用 package.json 进行安装。
+
+4、npm install --production 只安装dependencies而不安装devDependencies。
+
+5、npm install -g supervisor  运行 supervisor --harmony index 启动程序，会监听当前目录下 node 和 js 后缀的文件，当这些文件发生改动时，supervisor 会自动重启程序。
+
+6、var ua = req.headers["user-agent"].toLowerCase(); 获取客户端浏览器信息
+
+express: web 框架
+express-session: session 中间件
+connect-mongo: 将 session 存储于 mongodb，结合 express-session 使用
+connect-flash: 页面通知提示的中间件，基于 session 实现
+ejs: 模板
+express-formidable: 接收表单及文件的上传中间件
+config-lite: 读取配置文件
+marked: markdown 解析
+moment: 时间格式化
+mongolass: mongodb 驱动
+objectid-to-timestamp: 根据 ObjectId 生成时间戳
+sha1: sha1 加密，用于密码加密
+winston: 日志
+express-winston: 基于 winston 的用于 express 的日志中间件
+
+var winston = require('winston');
+var expressWinston = require('express-winston');  日志
+

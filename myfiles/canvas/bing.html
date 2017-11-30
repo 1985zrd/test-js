@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+	<style>
+		html,body{padding:0;margin:0;height:100%;}
+	</style>
+</head>
+<body>
+<a href="javascript:">1111111111</a>
+	<canvas id="canvas" width="1400" height="700" style="display:block;margin:0 auto;">
+		浏览器不支持canvas，请使用高版本浏览器！
+	</canvas>
+</body>
+<script>
+var oCan = document.querySelector("#canvas");
+var ctx = oCan.getContext("2d");
+
+var arr = [46,894,113,135];
+//var color = ["#27b786","#2764b7","#9eb727","#b76b27"];
+
+draw(arr, ctx);
+
+function draw(obj,ctx){
+	var num = 0, start = 0, x = 100, y = 460;
+	
+	ctx.beginPath();
+	ctx.fillStyle = "#000";
+	ctx.arc(200, 300, 104, 0, 2*Math.PI);
+	ctx.closePath();
+	ctx.fill();
+
+	for(var  i = 0, len = obj.length; i < len; i++){
+		num+=obj[i];
+	}
+	for (var i = 0, len = obj.length; i < len; i++) {
+		ctx.fillStyle = "rgb("+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+")";
+		//ctx.fillStyle = color[i];
+		ctx.strokeStyle = "#fff";
+		ctx.lineWidth = 1;
+		ctx.beginPath();
+		ctx.moveTo(200, 300);
+		ctx.arc(200, 300, 100, start, start+2*Math.PI*(obj[i]/num), false);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+		start = start+2*Math.PI*(obj[i]/num);
+
+		ctx.beginPath();
+		ctx.fillRect( x, y+20*i, 10, 10 );
+		ctx.closePath();
+		//ctx.fill();
+
+		ctx.beginPath();
+		ctx.fillStyle = "#000";
+		ctx.font = 'normal 14px arial';
+		ctx.textBaseline = 'Middle';
+		ctx.fillText("这里是第"+(i+1)+"块", x+20, y+10+20*i);
+		ctx.closePath();
+	};
+};
+</script>
+</html>

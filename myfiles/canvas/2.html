@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+	<style>
+		html,body{height:100%;}
+		*{padding:0;margin:0;}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" style="display:block;"></canvas>
+</body>
+<script>
+	var ocan = document.querySelector("#canvas");
+	var ctx = ocan.getContext("2d");
+	var width,height;
+
+	windowSize();
+	drawPage();
+
+	window.onresize = function(){
+		windowSize();
+		drawPage();
+	};
+
+	function drawPage(){
+		ctx.clearRect(0, 0, width, height);
+		var grd = ctx.createRadialGradient(width/2,height,0,width/2,height,height*1.4);
+		grd.addColorStop(0,"#2b3865");
+		grd.addColorStop(1,"#00051d");
+		ctx.fillStyle = grd;
+		ctx.fillRect(0, 0, width, height);
+
+		for(var i=0; i<100; i++){
+			var r = Math.round( Math.random()*1+1 );
+			drawStar( {
+				"ctx" : ctx, 
+				"R" : r,
+				"r" : r/1.5,
+				"x" : Math.random()*width,
+				"y" : Math.random()*height/1.5,
+				"rot":Math.random()*360,
+				"lineColor":"#7383a4",
+				"fillColor":"#afbed5",
+				"lineJoin": "round",
+				"lineWidth" : 1
+			} )
+		}
+
+		fillMoon(width/1.8, 150, width/30, 50);
+
+		drawGround(ctx);
+		ctx.beginPath();
+		var textColor = ctx.createLinearGradient(50, 0, 200, 0);
+		textColor.addColorStop(0, "#00ffea");
+		textColor.addColorStop(0.5, "#f6ff00");
+		textColor.addColorStop(1, "#ff3c00");
+		ctx.fillStyle = textColor;
+		ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+		ctx.shadowBlur = 4;
+		ctx.shadowOffsetX = -3;
+		ctx.shadowOffsetY = 3;
+		ctx.font = "20px Arial";
+
+		ctx.fillText("月朗星稀", 50, height-50);;
+		ctx.closePath();
+	};
+	
+	function windowSize(){
+		width = document.body.clientWidth, height = document.body.clientHeight;
+		ocan.width = width;
+		ocan.height = height;
+	};
+
+	function drawStar( opt ){
+		opt.ctx.lineJoin = opt.lineJoin || "miter";
+		opt.ctx.lineWidth = opt.lineWidth || 1;
+		opt.ctx.miterLimit = 50;
+		opt.ctx.strokeStyle = opt.lineColor || "#000";
+		opt.ctx.beginPath();
+		for(var i = 0; i < 5; i++){
+			opt.ctx.lineTo( Math.cos( (18+i*72-(opt.rot?opt.rot:0))/180*Math.PI )*opt.R + opt.x, -Math.sin( (18+i*72-(opt.rot?opt.rot:0))/180*Math.PI )*opt.R + opt.y );
+			opt.ctx.lineTo( Math.cos( (54+i*72-(opt.rot?opt.rot:0))/180*Math.PI )*opt.r + opt.x, -Math.sin( (54+i*72-(opt.rot?opt.rot:0))/180*Math.PI )*opt.r + opt.y );
+		}
+		opt.ctx.closePath();
+		if(opt.fillColor){
+			opt.ctx.fillStyle = opt.fillColor;
+			opt.ctx.fill();
+		}
+		opt.ctx.stroke();
+	};
+	function fillMoon(x1, y1, d, r){
+		ctx.save();
+		var img = new Image();
+		img.src = "img/moon.jpg";
+		img.onload = function(){
+			ctx.beginPath();
+			ctx.translate(x1, y1);
+			ctx.rotate(30*Math.PI/180);
+			ctx.shadowColor = "rgba(170, 198, 230, 0.7)";
+			ctx.shadowBlur = 20;
+			var pad = ctx.createPattern(img, "no-repeat");
+			ctx.fillStyle = pad;
+			ctx.arc(0, 0, r, 0.5*Math.PI, 1.5*Math.PI, true);
+			ctx.moveTo(0, -r);
+			ctx.arcTo(d, 0, 0, r, Math.abs(r*dis(0, r, d, 0)/d) );
+			ctx.closePath();
+			ctx.fill();
+		};
+		ctx.restore();
+	};
+	function dis(x1, y1, x2, y2){
+		return Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) );
+	};
+	function drawGround(ctx){
+		ctx.save();
+		ctx.beginPath();
+		var greenGrd = ctx.createLinearGradient(0,height-400,0,height);
+		greenGrd.addColorStop(0,"rgba(0, 0, 0, 0.7)");
+		greenGrd.addColorStop(1,"#408800");
+		ctx.fillStyle = greenGrd;
+		ctx.moveTo(0, height-300);
+		ctx.bezierCurveTo( width/3, height-400, width/2, height-100, width, height-300);
+		ctx.lineTo(width,height);
+		ctx.lineTo(0,height);
+		ctx.shadowColor = "rgba(53, 84, 133, 0.3)";
+		ctx.shadowBlur = 50;
+		ctx.shadowOffsetY = -20;
+		ctx.fill();
+		ctx.closePath();
+		ctx.restore();
+	};
+</script>
+</html>

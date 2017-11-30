@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+	<style>
+		html,body{height:100%;}
+		*{padding:0;margin:0;}
+		.btn{position: fixed;left:300px;top:30px;background: red;color:#fff;padding:10px 20px;cursor:pointer;}
+	</style>
+</head>
+<body>
+	<canvas id="canvas" style="display:block;"></canvas>
+	<div class="btn">按钮</div>
+</body>
+<script>
+	var ocan = document.querySelector("#canvas");
+	var ctx = ocan.getContext("2d");
+	var width,height;
+	var isBtn = true;
+
+	windowSize();
+	drawPage();
+	var flag = true;
+
+	window.onresize = function(){
+		windowSize();
+		drawPage();
+	};
+
+	ocan.addEventListener("mousemove",fn);
+
+	document.querySelector(".btn").onclick = function(){
+		isBtn = !isBtn;
+		drawPage();
+	};
+	document.querySelector(".btn").onselectstart=function(){return false;}
+
+	function drawPage(x,y){
+		ctx.clearRect( 0, 0, width, height );
+		if(isBtn){
+			ctx.fillStyle = "blue"
+		}else{
+			ctx.fillStyle = "yellow"
+		}
+		ctx.arc(100,100,50,0,2*Math.PI)
+		/*if( ctx.isPointInPath(x, y) ){
+			ctx.fillStyle = "red"
+		}else{
+			ctx.fillStyle = "black"
+		}*/
+		ctx.fill();
+	};
+	function fn(e){
+		var ev = e || window.event;
+		var x = ev.clientX - ocan.getBoundingClientRect().left;
+		var y = ev.clientY - ocan.getBoundingClientRect().top;
+		drawPage(x,y);
+	};
+
+	function windowSize(){
+		width = document.body.clientWidth, height = document.body.clientHeight;
+		ocan.width = width;
+		ocan.height = height;
+	};
+</script>
+</html>
